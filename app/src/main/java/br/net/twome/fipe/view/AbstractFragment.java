@@ -5,52 +5,98 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import br.net.twome.fipe.R;
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
 import br.net.twome.fipe.adapter.holder.SimpleBeanViewHolder;
 import br.net.twome.fipe.business.SimpleBean;
 
-public abstract class AbstractFragment<T extends SimpleBean, P> extends Fragment implements SimpleBeanViewHolder.HolderClickListener<T>{
+public abstract class AbstractFragment<T extends SimpleBean, P extends Serializable> extends Fragment implements SimpleBeanViewHolder.HolderClickListener<T>{
 
     public static final String PARAMETER = "parameter";
-    protected RecyclerView recyclerView;
-    protected SimpleBeanRecyclerViewAdapter<? extends SimpleBean> adapter;
+    public static final String DATA = "data";
+
+    private RecyclerView recyclerView;
+    private SimpleBeanRecyclerViewAdapter<T> adapter;
+
+    protected P parameter;
+    private ArrayList<T> data;
 
     public abstract String createTitle();
     public abstract String createSubTitle();
-    public abstract AbstractFragment fragmentAnterior();
-    public abstract void createAdapter(RecyclerView recyclerView);
-
-    protected P parameter;
+    public abstract void createData(SimpleBeanRecyclerViewAdapter<T> adapter);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+
+        if(savedInstanceState!=null){
             parameter = (P)getArguments().getSerializable(PARAMETER);
+            data = (ArrayList<T>) savedInstanceState.getSerializable(DATA);
+
+            Log.d("TAG",getClass().getSimpleName()+" RESTORED SAVED INSTANCE - Parameter: "+parameter+" | DATA: "+(data==null?"NULL":data.size()));
+        }else if (getArguments() != null) {
+            parameter = (P)getArguments().getSerializable(PARAMETER);
+
+            Log.d("TAG",getClass().getSimpleName()+" ARGUMENTS - Parameter: "+parameter);
         }
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(PARAMETER, parameter);
+        outState.putSerializable(DATA, data);
+
+        Log.d("TAG",getClass().getSimpleName()+" INSTANCE SAVED - Parameter: "+parameter+" | DATA: "+(data==null?"NULL":data.size()));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recycler_simple_bean, container, false);
+        if(recyclerView!=null && adapter!=null){
+            Log.d("TAG",getClass().getSimpleName()+" onCreateView with components instances");
+            return recyclerView;
+        }
+        Log.d("TAG",getClass().getSimpleName()+" Creating components in onCreateView ");
 
-        Context context = view.getContext();
-        recyclerView = (RecyclerView) view;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_simple_bean, container, false);;
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
 
-        createAdapter(recyclerView);
+        adapter = createEmptyAdapter();
+        recyclerView.setAdapter(adapter);
 
-        return view;
+        if(data == null){
+            createData(adapter);
+        }else{
+            adapter.setData(data);
+        }
+
+        return recyclerView;
+    }
+
+    protected SimpleBeanRecyclerViewAdapter<T> createEmptyAdapter(){
+        return new SimpleBeanRecyclerViewAdapter<T>(new ArrayList<T>(), this){
+            @Override
+            public void setData(ArrayList data) {
+                super.setData(data);
+                AbstractFragment.this.data = data;
+            }
+        };
     }
 
     public void orderList(String query) {
         recyclerView.scrollToPosition(0);
         if(adapter != null){
             adapter.orderBy(query);
+            this.data = adapter.getData();
         }
     }
 

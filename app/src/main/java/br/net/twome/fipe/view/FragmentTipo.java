@@ -1,17 +1,17 @@
 package br.net.twome.fipe.view;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
 import br.net.twome.fipe.adapter.holder.SimpleBeanViewHolder;
 import br.net.twome.fipe.adapter.holder.TipoViewHolder;
 import br.net.twome.fipe.business.Tipo;
 
-public class FragmentTipo extends AbstractFragment<Tipo, Void> {
+public class FragmentTipo extends AbstractFragment<Tipo, Tipo> {
 
     public static FragmentTipo newInstance() {
         FragmentTipo fragment = new FragmentTipo();
@@ -32,19 +32,18 @@ public class FragmentTipo extends AbstractFragment<Tipo, Void> {
     }
 
     @Override
-    public AbstractFragment fragmentAnterior() {
-        return null;
+    public void createData(SimpleBeanRecyclerViewAdapter<Tipo> adapter) {
+        adapter.setData(new ArrayList<>(Arrays.asList(Tipo.TIPOS)));
     }
 
     @Override
-    public void createAdapter(RecyclerView recyclerView) {
-        adapter = new SimpleBeanRecyclerViewAdapter<Tipo>(Arrays.asList(Tipo.TIPOS), this){
+    protected SimpleBeanRecyclerViewAdapter<Tipo> createEmptyAdapter() {
+        return new SimpleBeanRecyclerViewAdapter<Tipo>(new ArrayList<>(Arrays.asList(Tipo.TIPOS)), this){
             @Override
             public SimpleBeanViewHolder createViewHolder(LayoutInflater inflater, ViewGroup parent) {
                 return new TipoViewHolder(inflater, parent);
             }
         };
-        recyclerView.setAdapter(adapter);
     }
 
     @Override

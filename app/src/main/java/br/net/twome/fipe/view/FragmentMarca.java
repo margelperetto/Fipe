@@ -1,8 +1,7 @@
 package br.net.twome.fipe.view;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import java.util.List;
+import java.util.ArrayList;
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
 import br.net.twome.fipe.business.Marca;
 import br.net.twome.fipe.business.Tipo;
@@ -20,17 +19,6 @@ public class FragmentMarca extends AbstractFragment<Marca,Tipo> {
     }
 
     @Override
-    public void createAdapter(final RecyclerView recyclerView) {
-        new FipeService().getMarcas(parameter, new ServiceCallback<List<Marca>>() {
-            @Override
-            public void onSuccess(List<Marca> data) {
-                adapter = new SimpleBeanRecyclerViewAdapter<>(data, FragmentMarca.this);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    @Override
     public String createTitle() {
         return "Marcas";
     }
@@ -41,12 +29,18 @@ public class FragmentMarca extends AbstractFragment<Marca,Tipo> {
     }
 
     @Override
-    public AbstractFragment fragmentAnterior() {
-        return FragmentTipo.newInstance();
+    public void createData(final SimpleBeanRecyclerViewAdapter<Marca> adapter) {
+        new FipeService().getMarcas(parameter, new ServiceCallback<ArrayList<Marca>>() {
+            @Override
+            public void onSuccess(ArrayList<Marca> data) {
+                adapter.setData(data);
+            }
+        });
     }
 
     @Override
     public void onClick(Marca obj) {
         ((MainActivity)getActivity()).showFragment(FragmentVeiculo.getInstance(obj));
     }
+
 }

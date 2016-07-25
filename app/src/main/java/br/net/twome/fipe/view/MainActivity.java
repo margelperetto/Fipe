@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -15,7 +14,6 @@ import br.net.twome.fipe.utils.Android;
 public class MainActivity extends AppCompatActivity implements MaterialSearchView.OnQueryTextListener{
 
     private MaterialSearchView searchView;
-    private AbstractFragment selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +26,7 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
 
-        Log.d("SAVED","É nulo? "+(savedInstanceState==null));
-
-        if(selected == null){
+        if(savedInstanceState == null){
             showFragment(FragmentTipo.newInstance());
         }
     }
@@ -58,20 +54,18 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
 
     @Override
     public void onBackPressed() {
-        if (fecharPesquisa()) {
+        if (closeSearch()) {
             return;
         }
-        if(selected!=null){
-            AbstractFragment ant = selected.fragmentAnterior();
-            if(ant!=null){
-                showFragment(ant);
-                return;
-            }
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 1) {
+            fm.popBackStack();
+        } else {
+            Android.finishDialog(this);
         }
-        Android.finishDialog(this);
     }
 
-    public boolean fecharPesquisa(){
+    public boolean closeSearch(){
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
             return true;
@@ -80,16 +74,17 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
     }
 
     public void showFragment(AbstractFragment fragment) {
-        fecharPesquisa();
-        this.selected = fragment;
+        closeSearch();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container_body, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        AbstractFragment selected = (AbstractFragment) getSupportFragmentManager().findFragmentById(R.id.container_body);
         if(selected!=null && newText!=null && !newText.isEmpty()){
             selected.orderList(newText);
             return true;

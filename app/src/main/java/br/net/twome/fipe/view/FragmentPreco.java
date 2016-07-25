@@ -1,8 +1,7 @@
 package br.net.twome.fipe.view;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import java.util.List;
+import java.util.ArrayList;
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
 import br.net.twome.fipe.business.Modelo;
 import br.net.twome.fipe.business.Preco;
@@ -20,17 +19,6 @@ public class FragmentPreco extends AbstractFragment<Preco, Modelo>{
     }
 
     @Override
-    public void createAdapter(final RecyclerView recyclerView) {
-        new FipeService().getPreco(parameter, new ServiceCallback<List<Preco>>() {
-            @Override
-            public void onSuccess(List<Preco> data) {
-                adapter = new SimpleBeanRecyclerViewAdapter<>(data, FragmentPreco.this);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    @Override
     public String createTitle() {
         return parameter.getVeiculo().getName();
     }
@@ -41,13 +29,18 @@ public class FragmentPreco extends AbstractFragment<Preco, Modelo>{
     }
 
     @Override
-    public AbstractFragment fragmentAnterior() {
-        return FragmentModelo.getInstance(parameter.getVeiculo());
+    public void createData(final SimpleBeanRecyclerViewAdapter<Preco> adapter) {
+        new FipeService().getPreco(parameter, new ServiceCallback<ArrayList<Preco>>() {
+            @Override
+            public void onSuccess(ArrayList<Preco> data) {
+                adapter.setData(data);
+            }
+        });
     }
 
     @Override
     public void onClick(Preco obj) {
         //TODO
-        ((MainActivity)getActivity()).fecharPesquisa();
+        ((MainActivity)getActivity()).closeSearch();
     }
 }

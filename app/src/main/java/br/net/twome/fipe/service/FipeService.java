@@ -12,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 
 import br.net.twome.fipe.business.Marca;
 import br.net.twome.fipe.business.Modelo;
@@ -25,15 +24,15 @@ public class FipeService {
     private static final String TAG = "FIPE";
     private static final String BASE_URL = "http://fipeapi.appspot.com/api/1/";
 
-    public void getMarcas(final Tipo tipo, final ServiceCallback<List<Marca>> callback) {
-        new AsyncTask<Void, Void, List<Marca>>() {
+    public void getMarcas(final Tipo tipo, final ServiceCallback<ArrayList<Marca>> callback) {
+        new AsyncTask<Void, Void, ArrayList<Marca>>() {
             //GET: http://fipeapi.appspot.com/api/1/carros/marcas.json
             @Override
-            protected List<Marca> doInBackground(Void... params) {
+            protected ArrayList<Marca> doInBackground(Void... params) {
                 try {
                     JSONArray result = new JSONArray(getStringFromUrl(BASE_URL + tipo.getTipo()+"/marcas.json"));
                     JSONObject obj;
-                    List<Marca> marcas = new ArrayList<Marca>(result.length());
+                    ArrayList<Marca> marcas = new ArrayList<>(result.length());
                     for (int i=0; i<result.length(); i++) {
                         obj = result.getJSONObject(i);
                         marcas.add(new Marca(obj.getString("id"), obj.getString("name"), tipo));
@@ -46,21 +45,21 @@ public class FipeService {
             }
 
             @Override
-            protected void onPostExecute(List<Marca> marcas) {
+            protected void onPostExecute(ArrayList<Marca> marcas) {
                 callback.onSuccess(marcas);
             }
         }.execute();
     }
 
-    public void getVeiculos(final Marca marca, final ServiceCallback<List<Veiculo>> callback) {
-        new AsyncTask<Void, Void, List<Veiculo>>() {
+    public void getVeiculos(final Marca marca, final ServiceCallback<ArrayList<Veiculo>> callback) {
+        new AsyncTask<Void, Void, ArrayList<Veiculo>>() {
             //GET: http://fipeapi.appspot.com/api/1/carros/veiculos/21.json
             @Override
-            protected List<Veiculo> doInBackground(Void... params) {
+            protected ArrayList<Veiculo> doInBackground(Void... params) {
                 try {
                     JSONArray result = new JSONArray(getStringFromUrl(BASE_URL + "/"+marca.getTipo().getTipo()+"/veiculos/"+marca.getId()+".json"));
                     JSONObject obj;
-                    List<Veiculo> veiculos = new ArrayList<Veiculo>(result.length());
+                    ArrayList<Veiculo> veiculos = new ArrayList<>(result.length());
                     for (int i=0; i<result.length(); i++) {
                         obj = result.getJSONObject(i);
                         veiculos.add(new Veiculo(obj.getString("id"), obj.getString("name"), marca));
@@ -73,22 +72,22 @@ public class FipeService {
             }
 
             @Override
-            protected void onPostExecute(List<Veiculo> veiculos) {
+            protected void onPostExecute(ArrayList<Veiculo> veiculos) {
                 callback.onSuccess(veiculos);
             }
         }.execute();
     }
 
-    public void getModelos(final Veiculo veiculo, final ServiceCallback<List<Modelo>> callback) {
-        new AsyncTask<Void, Void, List<Modelo>>() {
+    public void getModelos(final Veiculo veiculo, final ServiceCallback<ArrayList<Modelo>> callback) {
+        new AsyncTask<Void, Void, ArrayList<Modelo>>() {
             //GET: http://fipeapi.appspot.com/api/1/carros/veiculo/21/4828.json
             @Override
-            protected List<Modelo> doInBackground(Void... params) {
+            protected ArrayList<Modelo> doInBackground(Void... params) {
                 try {
                     JSONArray result = new JSONArray(getStringFromUrl(BASE_URL + "/"+veiculo.getMarca().getTipo().getTipo()+"/veiculo/"+
                             veiculo.getMarca().getId()+"/"+veiculo.getId()+".json"));
                     JSONObject obj;
-                    List<Modelo> modelos = new ArrayList<Modelo>(result.length());
+                    ArrayList<Modelo> modelos = new ArrayList<>(result.length());
                     for (int i=0; i<result.length(); i++) {
                         obj = result.getJSONObject(i);
                         modelos.add(new Modelo(obj.getString("id"), obj.getString("name"), veiculo));
@@ -101,32 +100,31 @@ public class FipeService {
             }
 
             @Override
-            protected void onPostExecute(List<Modelo> modelos) {
+            protected void onPostExecute(ArrayList<Modelo> modelos) {
                 callback.onSuccess(modelos);
             }
         }.execute();
     }
 
-    public void getPreco(final Modelo modelo, final ServiceCallback<List<Preco>> callback) {
-        new AsyncTask<Void, Void, List<Preco>>() {
+    public void getPreco(final Modelo modelo, final ServiceCallback<ArrayList<Preco>> callback) {
+        new AsyncTask<Void, Void, ArrayList<Preco>>() {
             //GET: http://fipeapi.appspot.com/api/1/carros/veiculo/21/4828/2013-1.json
             @Override
-            protected List<Preco> doInBackground(Void... params) {
+            protected ArrayList<Preco> doInBackground(Void... params) {
                 try {
                     JSONObject obj = new JSONObject(getStringFromUrl(BASE_URL + "/"+modelo.getVeiculo().getMarca().getTipo().getTipo()+
                             "/veiculo/"+modelo.getVeiculo().getMarca().getId()+"/"+modelo.getVeiculo().getId()+"/"+modelo.getId()+".json"));
 
-                    Preco preco = null;
-                    List<Preco> precos = new ArrayList<>(1);
-                    if (obj!=null) {
-                        preco = new Preco();
-                        preco.setModelo(modelo);
+                    ArrayList<Preco> precos = new ArrayList<>(1);
 
-                        preco.setId(obj.getString("id"));
-                        preco.setName(obj.getString("preco"));
+                    Preco preco = new Preco();
+                    preco.setModelo(modelo);
 
-                        precos.add(preco);
-                    }
+                    preco.setId(obj.getString("id"));
+                    preco.setName(obj.getString("preco"));
+
+                    precos.add(preco);
+
                     return precos;
                 }catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
@@ -135,7 +133,7 @@ public class FipeService {
             }
 
             @Override
-            protected void onPostExecute(List<Preco> precos) {
+            protected void onPostExecute(ArrayList<Preco> precos) {
                 callback.onSuccess(precos);
             }
         }.execute();
@@ -148,8 +146,9 @@ public class FipeService {
         http.setRequestMethod("GET");
 
         StringBuilder result = new StringBuilder();
-        BufferedReader rd = new BufferedReader(new InputStreamReader(http.getInputStream(), Charset.forName("utf-8")));
+        BufferedReader rd = null;
         try {
+            rd = new BufferedReader(new InputStreamReader(http.getInputStream(), Charset.forName("utf-8")));
             String line;
             while ((line = rd.readLine()) != null) {
                 result.append(line);

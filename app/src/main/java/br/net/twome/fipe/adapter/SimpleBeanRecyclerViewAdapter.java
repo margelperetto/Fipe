@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,11 +15,11 @@ import br.net.twome.fipe.utils.StringUtils;
 
 public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends RecyclerView.Adapter<SimpleBeanViewHolder> {
 
-    private List<T> data;
+    private ArrayList<T> data;
     private SimpleBeanViewHolder.HolderClickListener<T> listener;
 
-    public SimpleBeanRecyclerViewAdapter(List<T> items,SimpleBeanViewHolder.HolderClickListener<T> listener) {
-        data = items;
+    public SimpleBeanRecyclerViewAdapter(ArrayList<T> data,SimpleBeanViewHolder.HolderClickListener<T> listener) {
+        this.data = data;
         this.listener = listener;
     }
 
@@ -43,7 +44,7 @@ public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends Recycle
         return data.size();
     }
 
-    public List<T> getData(){
+    public ArrayList<T> getData(){
         return data;
     }
 
@@ -71,4 +72,9 @@ public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends Recycle
         notifyDataSetChanged();
     }
 
+    public void setData(ArrayList<T> data) {
+        this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
+    }
 }
