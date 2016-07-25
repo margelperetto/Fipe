@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
+
+        Log.d("SAVED","É nulo? "+(savedInstanceState==null));
 
         if(selected == null){
             showFragment(FragmentTipo.newInstance());
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
     @Override
     public boolean onQueryTextChange(String newText) {
         if(selected!=null && newText!=null && !newText.isEmpty()){
-            selected.ordenarLista(newText);
+            selected.orderList(newText);
             return true;
         }
         return false;

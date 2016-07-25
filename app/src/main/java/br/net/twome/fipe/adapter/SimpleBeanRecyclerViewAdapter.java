@@ -24,13 +24,18 @@ public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends Recycle
 
     @Override
     public SimpleBeanViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new SimpleBeanViewHolder(LayoutInflater.from(parent.getContext()),parent);
+        SimpleBeanViewHolder holder = createViewHolder(LayoutInflater.from(parent.getContext()),parent);
+        holder.setListener(listener);
+        return holder;
+    }
+
+    public SimpleBeanViewHolder createViewHolder(LayoutInflater inflater, ViewGroup parent){
+        return new SimpleBeanViewHolder(inflater,parent);
     }
 
     @Override
     public void onBindViewHolder(final SimpleBeanViewHolder holder, int position) {
         holder.onBindViewHolder(data.get(position));
-        holder.setListener(listener);
     }
 
     @Override
