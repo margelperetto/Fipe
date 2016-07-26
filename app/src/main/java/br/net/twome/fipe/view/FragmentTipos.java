@@ -1,5 +1,6 @@
 package br.net.twome.fipe.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,10 +12,10 @@ import br.net.twome.fipe.holder.SimpleBeanViewHolder;
 import br.net.twome.fipe.holder.TipoViewHolder;
 import br.net.twome.fipe.business.Tipo;
 
-public class FragmentTipo extends AbstractFragment<Tipo, Tipo> {
+public class FragmentTipos extends AbstractFragment<Tipo, Tipo> {
 
-    public static FragmentTipo newInstance() {
-        FragmentTipo fragment = new FragmentTipo();
+    public static FragmentTipos newInstance() {
+        FragmentTipos fragment = new FragmentTipos();
         Bundle args = new Bundle();
         args.putSerializable(PARAMETER,null);
         fragment.setArguments(args);
@@ -48,6 +49,7 @@ public class FragmentTipo extends AbstractFragment<Tipo, Tipo> {
 
     @Override
     public void onClick(Tipo obj) {
-        ((MainActivity)getActivity()).showFragment(FragmentMarca.getInstance(obj));
+        ((MainActivity)getActivity()).showFragment(FragmentMarcas.getInstance(obj));
     }
+
 }

@@ -8,10 +8,10 @@ import br.net.twome.fipe.business.Tipo;
 import br.net.twome.fipe.service.FipeService;
 import br.net.twome.fipe.service.ServiceCallback;
 
-public class FragmentMarca extends AbstractFragment<Marca,Tipo> {
+public class FragmentMarcas extends AbstractFragment<Marca,Tipo> {
 
-    public static FragmentMarca getInstance(Tipo tipo){
-        FragmentMarca fragment = new FragmentMarca();
+    public static FragmentMarcas getInstance(Tipo tipo){
+        FragmentMarcas fragment = new FragmentMarcas();
         Bundle args = new Bundle();
         args.putSerializable(PARAMETER, tipo);
         fragment.setArguments(args);
@@ -30,7 +30,7 @@ public class FragmentMarca extends AbstractFragment<Marca,Tipo> {
 
     @Override
     public void createData(final SimpleBeanRecyclerViewAdapter<Marca> adapter) {
-        new FipeService().getMarcas(parameter, new ServiceCallback<ArrayList<Marca>>() {
+        new FipeService((MainActivity)getActivity()).getMarcas(parameter, new ServiceCallback<ArrayList<Marca>>() {
             @Override
             public void onSuccess(ArrayList<Marca> data) {
                 adapter.setData(data);
@@ -40,7 +40,7 @@ public class FragmentMarca extends AbstractFragment<Marca,Tipo> {
 
     @Override
     public void onClick(Marca obj) {
-        ((MainActivity)getActivity()).showFragment(FragmentVeiculo.getInstance(obj));
+        ((MainActivity)getActivity()).showFragment(FragmentVeiculos.getInstance(obj));
     }
 
 }

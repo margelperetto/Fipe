@@ -65,6 +65,15 @@ public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends Recycle
                 if( t2LC.startsWith(qLC) ){
                     return 1;
                 }
+                if( t1LC.contains(qLC) && t2LC.contains(qLC) ){
+                    return t2LC.compareTo(t1LC);
+                }
+                if( t1LC.contains(qLC) ){
+                    return -1;
+                }
+                if( t2LC.contains(qLC) ){
+                    return 1;
+                }
                 return 0;
             }
         });
@@ -76,4 +85,5 @@ public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends Recycle
         this.data.addAll(data);
         notifyDataSetChanged();
     }
+
 }

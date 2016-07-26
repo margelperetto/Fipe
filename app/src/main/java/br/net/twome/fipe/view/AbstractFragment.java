@@ -8,10 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import br.net.twome.fipe.R;
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
 import br.net.twome.fipe.holder.SimpleBeanViewHolder;

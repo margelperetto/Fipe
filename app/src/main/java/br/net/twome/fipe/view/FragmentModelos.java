@@ -8,10 +8,10 @@ import br.net.twome.fipe.business.Veiculo;
 import br.net.twome.fipe.service.FipeService;
 import br.net.twome.fipe.service.ServiceCallback;
 
-public class FragmentModelo extends AbstractFragment<Modelo,Veiculo>{
+public class FragmentModelos extends AbstractFragment<Modelo,Veiculo>{
 
-    public static FragmentModelo getInstance(Veiculo veiculo){
-        FragmentModelo fragment = new FragmentModelo();
+    public static FragmentModelos getInstance(Veiculo veiculo){
+        FragmentModelos fragment = new FragmentModelos();
         Bundle args = new Bundle();
         args.putSerializable(PARAMETER, veiculo);
         fragment.setArguments(args);
@@ -30,7 +30,7 @@ public class FragmentModelo extends AbstractFragment<Modelo,Veiculo>{
 
     @Override
     public void createData(final SimpleBeanRecyclerViewAdapter<Modelo> adapter) {
-        new FipeService().getModelos(parameter, new ServiceCallback<ArrayList<Modelo>>() {
+        new FipeService((MainActivity)getActivity()).getModelos(parameter, new ServiceCallback<ArrayList<Modelo>>() {
             @Override
             public void onSuccess(ArrayList<Modelo> data) {
                 adapter.setData(data);

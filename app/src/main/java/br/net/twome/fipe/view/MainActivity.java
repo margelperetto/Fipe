@@ -14,29 +14,34 @@ import br.net.twome.fipe.utils.Android;
 public class MainActivity extends AppCompatActivity implements MaterialSearchView.OnQueryTextListener{
 
     private MaterialSearchView searchView;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
 
         if(savedInstanceState == null){
-            showFragment(FragmentTipo.newInstance());
+            showFragment(FragmentTipos.newInstance());
         }
+    }
+
+    public Toolbar getToolbar(){
+        return mToolbar;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
-        MenuItem item = menu.findItem(R.id.menu_search);
-        searchView.setMenuItem(item);
+        MenuItem itemSearch = menu.findItem(R.id.menu_search);
+        searchView.setMenuItem(itemSearch);
 
         return true;
     }

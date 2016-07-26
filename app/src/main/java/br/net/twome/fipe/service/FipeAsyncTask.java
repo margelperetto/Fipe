@@ -1,6 +1,8 @@
 package br.net.twome.fipe.service;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -14,16 +16,21 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import br.net.twome.fipe.business.SimpleBean;
+import br.net.twome.fipe.view.MainActivity;
 
 public abstract class FipeAsyncTask <T extends SimpleBean> extends AsyncTask<Void, Void, ArrayList<T>> {
 
     private ServiceCallback<ArrayList<T>> callback;
+    private ProgressDialog dialog;
+    private MainActivity activity;
 
     public abstract String createURL();
     public abstract T createBean(JSONObject obj) throws Exception;
 
-    public FipeAsyncTask( ServiceCallback<ArrayList<T>> callback) {
+    public FipeAsyncTask(MainActivity activity, ServiceCallback<ArrayList<T>> callback) {
         this.callback = callback;
+        this.activity = activity;
+        dialog = ProgressDialog.show(activity, "", "Carregando. Aguarde...", true);
     }
 
     @Override
@@ -31,7 +38,7 @@ public abstract class FipeAsyncTask <T extends SimpleBean> extends AsyncTask<Voi
         try {
             String jsonStr = getStringFromUrl(createURL());
 
-            ArrayList<T> list = null;
+            ArrayList<T> list;
             if(jsonStr.startsWith("[")) {
                 JSONArray result = new JSONArray(jsonStr);
                 list = new ArrayList<>(result.length());
@@ -43,7 +50,7 @@ public abstract class FipeAsyncTask <T extends SimpleBean> extends AsyncTask<Voi
                 list.add(createBean(new JSONObject(jsonStr)));
             }
             return list;
-        }catch (Exception e) {
+        }catch (Throwable e) {
             Log.e(getClass().getSimpleName(), e.getMessage(), e);
             return null;
         }
@@ -51,13 +58,26 @@ public abstract class FipeAsyncTask <T extends SimpleBean> extends AsyncTask<Voi
 
     @Override
     protected void onPostExecute(ArrayList<T> modelos) {
+        dialog.cancel();
+        if(modelos==null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                    .setTitle("Ops...")
+                    .setMessage("Não foi possível conectar. Tudo certo com a sua internet?")
+                    .setCancelable(true);
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            modelos = new ArrayList<>();
+            activity.onBackPressed();
+        }
         callback.onSuccess(modelos);
     }
 
-    private String getStringFromUrl(String urlStr) throws Exception {
+    private String getStringFromUrl(String urlStr) throws Throwable {
 
         URL url = new URL(urlStr);
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
+        http.setConnectTimeout(15000);
         http.setRequestMethod("GET");
 
         StringBuilder result = new StringBuilder();
