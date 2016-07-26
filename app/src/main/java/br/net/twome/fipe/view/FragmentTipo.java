@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Arrays;
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
-import br.net.twome.fipe.adapter.holder.SimpleBeanViewHolder;
-import br.net.twome.fipe.adapter.holder.TipoViewHolder;
+import br.net.twome.fipe.holder.SimpleBeanViewHolder;
+import br.net.twome.fipe.holder.TipoViewHolder;
 import br.net.twome.fipe.business.Tipo;
 
 public class FragmentTipo extends AbstractFragment<Tipo, Tipo> {

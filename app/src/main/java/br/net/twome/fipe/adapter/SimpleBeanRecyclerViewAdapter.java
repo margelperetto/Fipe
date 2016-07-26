@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
-import br.net.twome.fipe.adapter.holder.SimpleBeanViewHolder;
+import br.net.twome.fipe.holder.SimpleBeanViewHolder;
 import br.net.twome.fipe.business.SimpleBean;
 import br.net.twome.fipe.utils.StringUtils;
 

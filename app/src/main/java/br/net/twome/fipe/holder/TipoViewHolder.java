@@ -1,4 +1,4 @@
-package br.net.twome.fipe.adapter.holder;
+package br.net.twome.fipe.holder;
 
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
