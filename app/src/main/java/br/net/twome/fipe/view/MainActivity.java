@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import br.net.twome.fipe.R;
 import br.net.twome.fipe.utils.Android;
@@ -23,6 +25,12 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
@@ -32,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
         }
     }
 
-    public Toolbar getToolbar(){
+    public Toolbar getToolbar() {
         return mToolbar;
     }
 

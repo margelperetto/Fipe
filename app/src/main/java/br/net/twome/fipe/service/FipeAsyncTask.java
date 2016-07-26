@@ -30,16 +30,21 @@ public abstract class FipeAsyncTask <T extends SimpleBean> extends AsyncTask<Voi
     public FipeAsyncTask(MainActivity activity, ServiceCallback<ArrayList<T>> callback) {
         this.callback = callback;
         this.activity = activity;
+    }
+
+    @Override
+    protected void onPreExecute() {
         dialog = ProgressDialog.show(activity, "", "Carregando. Aguarde...", true);
     }
 
     @Override
     protected ArrayList<T> doInBackground(Void... params) {
+        String jsonStr = "";
         try {
-            String jsonStr = getStringFromUrl(createURL());
+            jsonStr = getStringFromUrl(createURL());
 
             ArrayList<T> list;
-            if(jsonStr.startsWith("[")) {
+            if(jsonStr.trim().startsWith("[")) {
                 JSONArray result = new JSONArray(jsonStr);
                 list = new ArrayList<>(result.length());
                 for (int i = 0; i < result.length(); i++) {
@@ -52,6 +57,7 @@ public abstract class FipeAsyncTask <T extends SimpleBean> extends AsyncTask<Voi
             return list;
         }catch (Throwable e) {
             Log.e(getClass().getSimpleName(), e.getMessage(), e);
+            Log.d(getClass().getSimpleName(), "JSON: "+jsonStr);
             return null;
         }
     }

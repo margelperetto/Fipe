@@ -1,10 +1,7 @@
 package br.net.twome.fipe.view;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
@@ -15,11 +12,7 @@ import br.net.twome.fipe.business.Tipo;
 public class FragmentTipos extends AbstractFragment<Tipo, Tipo> {
 
     public static FragmentTipos newInstance() {
-        FragmentTipos fragment = new FragmentTipos();
-        Bundle args = new Bundle();
-        args.putSerializable(PARAMETER,null);
-        fragment.setArguments(args);
-        return fragment;
+        return new FragmentTipos();
     }
 
     @Override
@@ -52,4 +45,8 @@ public class FragmentTipos extends AbstractFragment<Tipo, Tipo> {
         ((MainActivity)getActivity()).showFragment(FragmentMarcas.getInstance(obj));
     }
 
+    @Override
+    protected boolean enableBack() {
+        return false;
+    }
 }

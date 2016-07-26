@@ -1,5 +1,6 @@
 package br.net.twome.fipe.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +36,7 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         super.onCreate(savedInstanceState);
 
         if(savedInstanceState!=null){
-            parameter = (P)getArguments().getSerializable(PARAMETER);
+            parameter = (P)savedInstanceState.getSerializable(PARAMETER);
             data = (ArrayList<T>) savedInstanceState.getSerializable(DATA);
 
             Log.d(getClass().getSimpleName()," RESTORED SAVED INSTANCE - Parameter: "+parameter+" | DATA: "+(data==null?"NULL":data.size()));
@@ -58,6 +59,9 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(enableBack());
+        ((MainActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(enableBack());
+
         if(recyclerView!=null && adapter!=null){
             Log.d(getClass().getSimpleName()," onCreateView with components instances");
             return recyclerView;
@@ -77,6 +81,10 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         }
 
         return recyclerView;
+    }
+
+    protected boolean enableBack() {
+        return true;
     }
 
     protected SimpleBeanRecyclerViewAdapter<T> createEmptyAdapter(){
@@ -103,4 +111,5 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         ((MainActivity)getActivity()).getSupportActionBar().setTitle(createTitle());
         ((MainActivity)getActivity()).getSupportActionBar().setSubtitle(createSubTitle());
     }
+
 }

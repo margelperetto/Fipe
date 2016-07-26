@@ -37,7 +37,7 @@ public class FipeService {
         new FipeAsyncTask<Veiculo>(activity,callback){
             @Override
             public String createURL() {
-                return BASE_URL + "/"+marca.getTipo().getTipo()+"/veiculos/"+marca.getId()+".json";
+                return BASE_URL + marca.getTipo().getTipo()+"/veiculos/"+marca.getId()+".json";
             }
             @Override
             public Veiculo createBean(JSONObject obj) throws Exception {
@@ -51,7 +51,7 @@ public class FipeService {
         new FipeAsyncTask<Modelo>(activity,callback){
             @Override
             public String createURL() {
-                return BASE_URL + "/"+veiculo.getMarca().getTipo().getTipo()+"/veiculo/"+
+                return BASE_URL + veiculo.getMarca().getTipo().getTipo()+"/veiculo/"+
                         veiculo.getMarca().getId()+"/"+veiculo.getId()+".json";
             }
             @Override
@@ -66,7 +66,7 @@ public class FipeService {
         new FipeAsyncTask<Preco>(activity,callback){
             @Override
             public String createURL() {
-                return BASE_URL + "/"+modelo.getVeiculo().getMarca().getTipo().getTipo()+"/veiculo/"+
+                return BASE_URL + modelo.getVeiculo().getMarca().getTipo().getTipo()+"/veiculo/"+
                         modelo.getVeiculo().getMarca().getId()+"/"+modelo.getVeiculo().getId()+"/"+modelo.getId()+".json";
             }
             @Override

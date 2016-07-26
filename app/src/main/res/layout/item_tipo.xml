@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp"
     card_view:cardCornerRadius="4dp"
     android:background="?android:attr/selectableItemBackground">
 
@@ -12,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/iv_tipo"
@@ -25,8 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeight"
             android:gravity="center"
-            android:padding="8dp"
-            android:textSize="18sp"
+            android:padding="5dp"
+            android:textSize="22sp"
             style="@style/Base.TextAppearance.AppCompat.Body2"/>
     </LinearLayout>
 
