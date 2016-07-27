@@ -54,12 +54,12 @@ public class FragmentTipos extends AbstractFragment<Tipo, Tipo> {
     }
 
     @Override
-    protected RecyclerView.LayoutManager createLinearLayout() {
+    protected RecyclerView.LayoutManager createRecyclerViewLayoutManager() {
         boolean land = getActivity().getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_LANDSCAPE;
         if (land) {
             return new GridLayoutManager(getContext(), 3);
         }
-        return super.createLinearLayout();
+        return super.createRecyclerViewLayoutManager();
     }
 }

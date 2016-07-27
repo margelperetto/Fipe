@@ -56,7 +56,7 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         Log.d(getClass().getSimpleName()," INSTANCE SAVED - Parameter: "+parameter+" | DATA: "+(data==null?"NULL":data.size()));
     }
 
-    protected RecyclerView.LayoutManager createLinearLayout() {
+    protected RecyclerView.LayoutManager createRecyclerViewLayoutManager() {
         return new LinearLayoutManager(getActivity());
     }
 
@@ -72,7 +72,7 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         Log.d(getClass().getSimpleName()," Creating components in onCreateView ");
 
         recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_simple_bean, container, false);
-        recyclerView.setLayoutManager(createLinearLayout());
+        recyclerView.setLayoutManager(createRecyclerViewLayoutManager());
 
         adapter = createEmptyAdapter();
         recyclerView.setAdapter(adapter);
