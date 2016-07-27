@@ -1,6 +1,5 @@
 package br.net.twome.fipe.view;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,6 +56,10 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         Log.d(getClass().getSimpleName()," INSTANCE SAVED - Parameter: "+parameter+" | DATA: "+(data==null?"NULL":data.size()));
     }
 
+    protected RecyclerView.LayoutManager createLinearLayout() {
+        return new LinearLayoutManager(getActivity());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(enableBack());
@@ -68,8 +71,8 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         }
         Log.d(getClass().getSimpleName()," Creating components in onCreateView ");
 
-        recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_simple_bean, container, false);;
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_simple_bean, container, false);
+        recyclerView.setLayoutManager(createLinearLayout());
 
         adapter = createEmptyAdapter();
         recyclerView.setAdapter(adapter);

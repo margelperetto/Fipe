@@ -1,5 +1,8 @@
 package br.net.twome.fipe.view;
 
+import android.content.res.Configuration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import java.util.ArrayList;
@@ -48,5 +51,15 @@ public class FragmentTipos extends AbstractFragment<Tipo, Tipo> {
     @Override
     protected boolean enableBack() {
         return false;
+    }
+
+    @Override
+    protected RecyclerView.LayoutManager createLinearLayout() {
+        boolean land = getActivity().getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE;
+        if (land) {
+            return new GridLayoutManager(getContext(), 3);
+        }
+        return super.createLinearLayout();
     }
 }
