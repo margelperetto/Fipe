@@ -75,7 +75,15 @@ public class FipeService {
                 preco.setModelo(modelo);
 
                 preco.setId(obj.getString("id"));
-                preco.setName(obj.getString("preco"));
+                preco.setName(obj.getString("name"));
+                preco.setPreco(obj.getString("preco"));
+                preco.setCombustivel(obj.getString("combustivel"));
+                preco.setFipeCodigo(obj.getString("fipe_codigo"));
+                preco.setMarca(obj.getString("marca"));
+                preco.setReferencia(obj.getString("referencia"));
+                preco.setKey(obj.getString("key"));
+                preco.setAnoModelo(obj.getInt("ano_modelo"));
+
                 return preco;
             }
         }.execute();

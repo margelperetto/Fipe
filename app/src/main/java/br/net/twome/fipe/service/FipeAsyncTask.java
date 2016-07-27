@@ -13,7 +13,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import br.net.twome.fipe.business.SimpleBean;
 import br.net.twome.fipe.view.MainActivity;
@@ -76,6 +79,12 @@ public abstract class FipeAsyncTask <T extends SimpleBean> extends AsyncTask<Voi
             modelos = new ArrayList<>();
             activity.onBackPressed();
         }
+        Collections.sort(modelos, new Comparator<T>() {
+            @Override
+            public int compare(T t, T t1) {
+                return Collator.getInstance().compare(t.getName(),t1.getName());
+            }
+        });
         callback.onSuccess(modelos);
     }
 

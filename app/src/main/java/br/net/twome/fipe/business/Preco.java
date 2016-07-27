@@ -9,6 +9,7 @@ public class Preco extends SimpleBean{
     private String combustivel;
     private String referencia;
     private String fipeCodigo;
+    private String key;
 
     public Preco() {}
 
@@ -66,5 +67,13 @@ public class Preco extends SimpleBean{
 
     public void setFipeCodigo(String fipeCodigo) {
         this.fipeCodigo = fipeCodigo;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

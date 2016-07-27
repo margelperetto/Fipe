@@ -64,6 +64,7 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(enableBack());
         ((MainActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(enableBack());
+        ((MainActivity)getActivity()).setSearchVisible(enableSearch());
 
         if(recyclerView!=null && adapter!=null){
             Log.d(getClass().getSimpleName()," onCreateView with components instances");
@@ -74,7 +75,18 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_simple_bean, container, false);
         recyclerView.setLayoutManager(createRecyclerViewLayoutManager());
 
-        adapter = createEmptyAdapter();
+        adapter = new SimpleBeanRecyclerViewAdapter<T>(new ArrayList<T>(), this){
+            @Override
+            public void setData(ArrayList data) {
+                super.setData(data);
+                AbstractFragment.this.data = data;
+            }
+
+            @Override
+            public SimpleBeanViewHolder createViewHolder(LayoutInflater inflater, ViewGroup parent) {
+                return createHolder(inflater,parent);
+            }
+        };
         recyclerView.setAdapter(adapter);
 
         if(data == null){
@@ -86,18 +98,16 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         return recyclerView;
     }
 
-    protected boolean enableBack() {
+    protected boolean enableSearch() {
         return true;
     }
 
-    protected SimpleBeanRecyclerViewAdapter<T> createEmptyAdapter(){
-        return new SimpleBeanRecyclerViewAdapter<T>(new ArrayList<T>(), this){
-            @Override
-            public void setData(ArrayList data) {
-                super.setData(data);
-                AbstractFragment.this.data = data;
-            }
-        };
+    protected SimpleBeanViewHolder createHolder(LayoutInflater inflater, ViewGroup parent) {
+        return new SimpleBeanViewHolder(inflater,parent);
+    }
+
+    protected boolean enableBack() {
+        return true;
     }
 
     public void orderList(String query) {

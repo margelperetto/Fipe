@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
 
     private MaterialSearchView searchView;
     private Toolbar mToolbar;
+    private MenuItem itemSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +49,21 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
-        MenuItem itemSearch = menu.findItem(R.id.menu_search);
+        itemSearch = menu.findItem(R.id.menu_search);
         searchView.setMenuItem(itemSearch);
 
+        AbstractFragment frag = getSelectedFragment();
+        if(frag!=null){
+            setSearchVisible(frag.enableSearch());
+        }
+
         return true;
+    }
+
+    public void setSearchVisible(boolean b){
+        if(itemSearch!=null){
+            itemSearch.setVisible(b);
+        }
     }
 
     @Override
@@ -97,12 +109,16 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        AbstractFragment selected = (AbstractFragment) getSupportFragmentManager().findFragmentById(R.id.container_body);
+        AbstractFragment selected = getSelectedFragment();
         if(selected!=null && newText!=null && !newText.isEmpty()){
             selected.orderList(newText);
             return true;
         }
         return false;
+    }
+
+    public AbstractFragment getSelectedFragment(){
+        return (AbstractFragment) getSupportFragmentManager().findFragmentById(R.id.container_body);
     }
 
     @Override

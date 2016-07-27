@@ -34,13 +34,8 @@ public class FragmentTipos extends AbstractFragment<Tipo, Tipo> {
     }
 
     @Override
-    protected SimpleBeanRecyclerViewAdapter<Tipo> createEmptyAdapter() {
-        return new SimpleBeanRecyclerViewAdapter<Tipo>(new ArrayList<>(Arrays.asList(Tipo.TIPOS)), this){
-            @Override
-            public SimpleBeanViewHolder createViewHolder(LayoutInflater inflater, ViewGroup parent) {
-                return new TipoViewHolder(inflater, parent);
-            }
-        };
+    protected SimpleBeanViewHolder createHolder(LayoutInflater inflater, ViewGroup parent) {
+        return new TipoViewHolder(inflater, parent);
     }
 
     @Override
@@ -50,6 +45,10 @@ public class FragmentTipos extends AbstractFragment<Tipo, Tipo> {
 
     @Override
     protected boolean enableBack() {
+        return false;
+    }
+    @Override
+    protected boolean enableSearch() {
         return false;
     }
 

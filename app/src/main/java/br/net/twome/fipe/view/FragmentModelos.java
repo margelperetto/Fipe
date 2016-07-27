@@ -2,6 +2,8 @@ package br.net.twome.fipe.view;
 
 import android.os.Bundle;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
 import br.net.twome.fipe.business.Modelo;
 import br.net.twome.fipe.business.Veiculo;
@@ -33,6 +35,7 @@ public class FragmentModelos extends AbstractFragment<Modelo,Veiculo>{
         new FipeService((MainActivity)getActivity()).getModelos(parameter, new ServiceCallback<ArrayList<Modelo>>() {
             @Override
             public void onSuccess(ArrayList<Modelo> data) {
+                Collections.reverse(data);
                 adapter.setData(data);
             }
         });

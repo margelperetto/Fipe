@@ -1,10 +1,15 @@
 package br.net.twome.fipe.view;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import br.net.twome.fipe.adapter.SimpleBeanRecyclerViewAdapter;
 import br.net.twome.fipe.business.Modelo;
 import br.net.twome.fipe.business.Preco;
+import br.net.twome.fipe.holder.PrecoViewHolder;
+import br.net.twome.fipe.holder.SimpleBeanViewHolder;
 import br.net.twome.fipe.service.FipeService;
 import br.net.twome.fipe.service.ServiceCallback;
 
@@ -20,12 +25,12 @@ public class FragmentPreco extends AbstractFragment<Preco, Modelo>{
 
     @Override
     public String createTitle() {
-        return parameter.getVeiculo().getName();
+        return "Consulta FIPE";
     }
 
     @Override
     public String createSubTitle() {
-        return parameter.getName();
+        return null;
     }
 
     @Override
@@ -36,6 +41,16 @@ public class FragmentPreco extends AbstractFragment<Preco, Modelo>{
                 adapter.setData(data);
             }
         });
+    }
+
+    @Override
+    protected SimpleBeanViewHolder createHolder(LayoutInflater inflater, ViewGroup parent) {
+        return new PrecoViewHolder(inflater, parent);
+    }
+
+    @Override
+    protected boolean enableSearch() {
+        return false;
     }
 
     @Override

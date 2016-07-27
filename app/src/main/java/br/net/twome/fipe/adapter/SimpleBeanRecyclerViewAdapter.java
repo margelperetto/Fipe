@@ -57,7 +57,7 @@ public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends Recycle
                 String t2LC = StringUtils.retirarAcentos(t2.getName()).toLowerCase();
 
                 if( t1LC.startsWith(qLC) && t2LC.startsWith(qLC) ){
-                    return t2LC.compareTo(t1LC);
+                    return t1LC.compareTo(t2LC);
                 }
                 if( t1LC.startsWith(qLC) ){
                     return -1;
@@ -66,7 +66,7 @@ public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends Recycle
                     return 1;
                 }
                 if( t1LC.contains(qLC) && t2LC.contains(qLC) ){
-                    return t2LC.compareTo(t1LC);
+                    return t1LC.compareTo(t2LC);
                 }
                 if( t1LC.contains(qLC) ){
                     return -1;
