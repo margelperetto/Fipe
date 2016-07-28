@@ -62,9 +62,12 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(enableBack());
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(enableBack());
-        ((MainActivity)getActivity()).setSearchVisible(enableSearch());
+        MainActivity ma = (MainActivity)getActivity();
+        ma.getSupportActionBar().setDisplayHomeAsUpEnabled(enableBack());
+        ma.getSupportActionBar().setDisplayShowHomeEnabled(enableBack());
+        ma.getSupportActionBar().setTitle(createTitle());
+        ma.getSupportActionBar().setSubtitle(createSubTitle());
+        ma.setSearchVisible(enableSearch());
 
         if(recyclerView!=null && adapter!=null){
             Log.d(getClass().getSimpleName()," onCreateView with components instances");
@@ -110,19 +113,10 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         return true;
     }
 
-    public void orderList(String query) {
+    public void orderList(final String query) {
         recyclerView.scrollToPosition(0);
-        if(adapter != null){
-            adapter.orderBy(query);
-            this.data = adapter.getData();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle(createTitle());
-        ((MainActivity)getActivity()).getSupportActionBar().setSubtitle(createSubTitle());
+        adapter.orderBy(query);
+        this.data = adapter.getData();
     }
 
 }

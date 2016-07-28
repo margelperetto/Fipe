@@ -76,4 +76,8 @@ public class Preco extends SimpleBean{
     public void setKey(String key) {
         this.key = key;
     }
+
+    public boolean isZeroKm() {
+        return anoModelo>10000;
+    }
 }

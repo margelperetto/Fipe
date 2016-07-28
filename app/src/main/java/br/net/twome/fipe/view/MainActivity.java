@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
     private MaterialSearchView searchView;
     private Toolbar mToolbar;
     private MenuItem itemSearch;
+    private String lastSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        lastSearch = newText;
         AbstractFragment selected = getSelectedFragment();
         if(selected!=null && newText!=null && !newText.isEmpty()){
             selected.orderList(newText);
@@ -124,4 +126,7 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
     @Override
     public boolean onQueryTextSubmit(String query) { return false; }
 
+    public String lastSearch() {
+        return lastSearch;
+    }
 }
