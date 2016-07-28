@@ -45,7 +45,7 @@ public class PrecoViewHolder extends SimpleBeanViewHolder<Preco>{
         tvMarca.setText(item.getMarca());
         tvCombustivel.setText(item.getCombustivel());
         tvAno.setText(item.isZeroKm()?"ZERO KM":item.getAnoModelo()+"");
-        imgUrl = item.getMarca()+" "+item.getName()+(item.isZeroKm()?"":" "+item.getAnoModelo());
-        mWebView.loadUrl(GOOGLE_IMG_URL+imgUrl);
+        imgUrl = GOOGLE_IMG_URL+item.getMarca()+" "+item.getName()+(item.isZeroKm()?"":" "+item.getAnoModelo());
+        mWebView.loadUrl(imgUrl);
     }
 }

@@ -60,6 +60,10 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         return new LinearLayoutManager(getActivity());
     }
 
+    public String searchHint(){
+        return "Pesquisar";
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MainActivity ma = (MainActivity)getActivity();
@@ -68,6 +72,7 @@ public abstract class AbstractFragment<T extends SimpleBean, P extends Serializa
         ma.getSupportActionBar().setTitle(createTitle());
         ma.getSupportActionBar().setSubtitle(createSubTitle());
         ma.setSearchVisible(enableSearch());
+        ma.setSearchHint(searchHint());
 
         if(recyclerView!=null && adapter!=null){
             Log.d(getClass().getSimpleName()," onCreateView with components instances");

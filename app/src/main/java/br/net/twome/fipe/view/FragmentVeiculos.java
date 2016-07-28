@@ -39,7 +39,13 @@ public class FragmentVeiculos extends AbstractFragment<Veiculo,Marca>{
     }
 
     @Override
+    public String searchHint() {
+        return "Ex. Gol City 1.0 8v 2p";
+    }
+
+    @Override
     public void onClick(Veiculo obj) {
         ((MainActivity)getActivity()).showFragment(FragmentModelos.getInstance(obj));
     }
+
 }

@@ -16,16 +16,14 @@ import br.net.twome.fipe.utils.Android;
 public class MainActivity extends AppCompatActivity implements MaterialSearchView.OnQueryTextListener{
 
     private MaterialSearchView searchView;
-    private Toolbar mToolbar;
     private MenuItem itemSearch;
-    private String lastSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,14 +34,11 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
+        searchView.setHint("Pesquisar");
 
         if(savedInstanceState == null){
             showFragment(FragmentTipos.newInstance());
         }
-    }
-
-    public Toolbar getToolbar() {
-        return mToolbar;
     }
 
     @Override
@@ -99,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
         return false;
     }
 
+    public void setSearchHint(String hint){
+        searchView.setHint(hint);
+    }
+
     public void showFragment(AbstractFragment fragment) {
         closeSearch();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -110,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        lastSearch = newText;
         AbstractFragment selected = getSelectedFragment();
         if(selected!=null && newText!=null && !newText.isEmpty()){
             selected.orderList(newText);
@@ -126,7 +124,4 @@ public class MainActivity extends AppCompatActivity implements MaterialSearchVie
     @Override
     public boolean onQueryTextSubmit(String query) { return false; }
 
-    public String lastSearch() {
-        return lastSearch;
-    }
 }

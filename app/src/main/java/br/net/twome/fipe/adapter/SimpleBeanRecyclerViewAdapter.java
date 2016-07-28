@@ -1,6 +1,7 @@
 package br.net.twome.fipe.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -56,22 +57,30 @@ public class SimpleBeanRecyclerViewAdapter<T extends SimpleBean> extends Recycle
                 String t1LC = StringUtils.retirarAcentos(t1.getName()).toLowerCase();
                 String t2LC = StringUtils.retirarAcentos(t2.getName()).toLowerCase();
 
-                if( t1LC.startsWith(qLC) && t2LC.startsWith(qLC) ){
+                boolean t1Start = t1LC.startsWith(qLC);
+                boolean t2Start = t2LC.startsWith(qLC);
+
+                if( t1Start && t2Start ){
                     return t1LC.compareTo(t2LC);
                 }
-                if( t1LC.startsWith(qLC) ){
+                if( t1Start ){
                     return -1;
                 }
-                if( t2LC.startsWith(qLC) ){
+                if( t2Start ){
                     return 1;
                 }
-                if( t1LC.contains(qLC) && t2LC.contains(qLC) ){
+
+                qLC = StringUtils.quoteSpaces(qLC);
+                boolean t1Match = t1LC.matches(qLC);
+                boolean t2Match = t2LC.matches(qLC);
+
+                if( t1Match && t2Match ){
                     return t1LC.compareTo(t2LC);
                 }
-                if( t1LC.contains(qLC) ){
+                if( t1Match ){
                     return -1;
                 }
-                if( t2LC.contains(qLC) ){
+                if( t2Match ){
                     return 1;
                 }
                 return 0;
